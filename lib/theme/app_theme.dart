@@ -40,25 +40,39 @@ class AppTheme {
       scaffoldBackgroundColor: surface,
       textTheme: GoogleFonts.plusJakartaSansTextTheme().copyWith(
         displayLarge: GoogleFonts.plusJakartaSans(
-          fontSize: 32, fontWeight: FontWeight.w700, color: textPrimary,
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
         ),
         displayMedium: GoogleFonts.plusJakartaSans(
-          fontSize: 28, fontWeight: FontWeight.w600, color: textPrimary,
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          color: textPrimary,
         ),
         titleLarge: GoogleFonts.plusJakartaSans(
-          fontSize: 20, fontWeight: FontWeight.w600, color: textPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: textPrimary,
         ),
         titleMedium: GoogleFonts.plusJakartaSans(
-          fontSize: 16, fontWeight: FontWeight.w600, color: textPrimary,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: textPrimary,
         ),
         bodyLarge: GoogleFonts.plusJakartaSans(
-          fontSize: 15, fontWeight: FontWeight.w400, color: textPrimary,
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          color: textPrimary,
         ),
         bodyMedium: GoogleFonts.plusJakartaSans(
-          fontSize: 13, fontWeight: FontWeight.w400, color: textSecondary,
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
+          color: textSecondary,
         ),
         labelSmall: GoogleFonts.plusJakartaSans(
-          fontSize: 11, fontWeight: FontWeight.w500, color: textMuted,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          color: textMuted,
         ),
       ),
       appBarTheme: AppBarTheme(
@@ -66,7 +80,9 @@ class AppTheme {
         elevation: 0,
         centerTitle: false,
         titleTextStyle: GoogleFonts.plusJakartaSans(
-          fontSize: 20, fontWeight: FontWeight.w700, color: textPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
         ),
         iconTheme: const IconThemeData(color: textPrimary),
       ),
@@ -74,7 +90,8 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: cardBg,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: borderColor),
@@ -91,18 +108,23 @@ class AppTheme {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: danger),
         ),
-        hintStyle: GoogleFonts.plusJakartaSans(color: textMuted, fontSize: 14),
-        labelStyle: GoogleFonts.plusJakartaSans(color: textSecondary, fontSize: 14),
+        hintStyle:
+            GoogleFonts.plusJakartaSans(color: textMuted, fontSize: 14),
+        labelStyle: GoogleFonts.plusJakartaSans(
+            color: textSecondary, fontSize: 14),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primary,
           foregroundColor: Colors.white,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: GoogleFonts.plusJakartaSans(
-            fontSize: 15, fontWeight: FontWeight.w600,
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -111,45 +133,64 @@ class AppTheme {
         foregroundColor: Colors.white,
         elevation: 4,
       ),
-      dividerTheme: const DividerThemeData(color: borderColor, thickness: 1),
+      dividerTheme:
+          const DividerThemeData(color: borderColor, thickness: 1),
     );
   }
 
   static Color priorityColor(String priority) {
     switch (priority.toLowerCase()) {
-      case 'high': return highPriority;
-      case 'medium': return medPriority;
-      case 'low': return lowPriority;
-      default: return textMuted;
+      case 'high':
+        return highPriority;
+      case 'medium':
+        return medPriority;
+      case 'low':
+        return lowPriority;
+      default:
+        return textMuted;
     }
   }
 
   static Color priorityBgColor(String priority) {
     switch (priority.toLowerCase()) {
-      case 'high': return highPriorityBg;
-      case 'medium': return medPriorityBg;
-      case 'low': return lowPriorityBg;
-      default: return breakBg;
+      case 'high':
+        return highPriorityBg;
+      case 'medium':
+        return medPriorityBg;
+      case 'low':
+        return lowPriorityBg;
+      default:
+        return breakBg;
     }
   }
 
   static Color blockColor(String type) {
     switch (type.toLowerCase()) {
-      case 'high': return highPriority;
-      case 'medium': return medPriority;
-      case 'low': return lowPriority;
-      case 'break': return breakColor;
-      default: return primary;
+      case 'high':
+        return highPriority;
+      case 'medium':
+        return medPriority;
+      case 'low':
+        return lowPriority;
+      case 'break':
+        return breakColor;
+      default:
+        return primary;
     }
   }
 
   static Color blockBgColor(String type) {
     switch (type.toLowerCase()) {
-      case 'high': return highPriorityBg;
-      case 'medium': return medPriorityBg;
-      case 'low': return lowPriorityBg;
-      case 'break': return breakBg;
-      default: return surface;
+      case 'high':
+        return highPriorityBg;
+      case 'medium':
+        return medPriorityBg;
+      case 'low':
+        return lowPriorityBg;
+      case 'break':
+        return breakBg;
+      default:
+        return surface;
     }
   }
 }

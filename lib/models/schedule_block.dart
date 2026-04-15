@@ -62,12 +62,14 @@ class ScheduleBlock {
 }
 
 class GeneratedSchedule {
+  final String? title;
   final List<ScheduleBlock> blocks;
   final ScheduleStats stats;
   final String insight;
   final DateTime generatedAt;
 
   GeneratedSchedule({
+    this.title,
     required this.blocks,
     required this.stats,
     required this.insight,
@@ -76,6 +78,7 @@ class GeneratedSchedule {
 
   factory GeneratedSchedule.fromJson(Map<String, dynamic> json) =>
       GeneratedSchedule(
+        title: json['title'],
         blocks: (json['blocks'] as List<dynamic>)
             .map((b) => ScheduleBlock.fromJson(b))
             .toList(),
@@ -84,6 +87,7 @@ class GeneratedSchedule {
       );
 
   Map<String, dynamic> toJson() => {
+        'title': title,
         'blocks': blocks.map((b) => b.toJson()).toList(),
         'stats': stats.toJson(),
         'insight': insight,

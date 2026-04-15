@@ -25,15 +25,15 @@ class TasksScreen extends StatelessWidget {
             backgroundColor: AppTheme.surface,
             expandedHeight: 120,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+              titlePadding:
+                  const EdgeInsets.fromLTRB(20, 0, 20, 16),
               title: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'My Tasks',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                  Text('My Tasks',
+                      style:
+                          Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 2),
                   Text(
                     '${tasks.length} tasks · ${_formatDuration(provider.totalTaskDuration)} total',
@@ -47,11 +47,11 @@ class TasksScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.delete_sweep_outlined),
                   color: AppTheme.textSecondary,
-                  onPressed: () => _showClearDialog(context, provider),
+                  onPressed: () =>
+                      _showClearDialog(context, provider),
                 ),
             ],
           ),
-
           if (tasks.isNotEmpty) ...[
             SliverToBoxAdapter(
               child: Padding(
@@ -70,8 +70,10 @@ class TasksScreen extends StatelessWidget {
                       child: TaskCard(
                         task: task,
                         onTap: () => _editTask(context, task),
-                        onDelete: () => provider.removeTask(task.id),
-                        onToggle: () => provider.toggleTaskComplete(task.id),
+                        onDelete: () =>
+                            provider.removeTask(task.id),
+                        onToggle: () =>
+                            provider.toggleTaskComplete(task.id),
                       ),
                     );
                   },
@@ -112,12 +114,14 @@ class TasksScreen extends StatelessWidget {
     );
   }
 
-  void _showClearDialog(BuildContext context, ScheduleProvider provider) {
+  void _showClearDialog(
+      BuildContext context, ScheduleProvider provider) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Clear all tasks?'),
-        content: const Text('This will remove all your tasks. This action cannot be undone.'),
+        content: const Text(
+            'This will remove all your tasks. This action cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -128,7 +132,8 @@ class TasksScreen extends StatelessWidget {
               provider.clearTasks();
               Navigator.pop(ctx);
             },
-            style: TextButton.styleFrom(foregroundColor: AppTheme.danger),
+            style: TextButton.styleFrom(
+                foregroundColor: AppTheme.danger),
             child: const Text('Clear all'),
           ),
         ],
@@ -176,7 +181,8 @@ class _StatsRow extends StatelessWidget {
         const Spacer(),
         if ((stats['completed'] ?? 0) > 0)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(
+                horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: const Color(0x1A6C5CE7),
               borderRadius: BorderRadius.circular(20),
@@ -211,7 +217,8 @@ class _StatChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(20),
@@ -257,21 +264,16 @@ class _EmptyState extends StatelessWidget {
             Container(
               width: 96,
               height: 96,
-              decoration: BoxDecoration(
-                color: const Color(0x146C5CE7),
+              decoration: const BoxDecoration(
+                color: Color(0x146C5CE7),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.checklist_rounded,
-                size: 48,
-                color: AppTheme.primary,
-              ),
+              child: const Icon(Icons.checklist_rounded,
+                  size: 48, color: AppTheme.primary),
             ),
             const SizedBox(height: 24),
-            Text(
-              'No tasks yet',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Text('No tasks yet',
+                style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 8),
             Text(
               'Add your tasks and let AI build\nan optimized schedule for you.',

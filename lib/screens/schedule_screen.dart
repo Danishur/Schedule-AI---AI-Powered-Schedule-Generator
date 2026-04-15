@@ -21,7 +21,6 @@ class ScheduleScreen extends StatelessWidget {
 
     if (provider.currentSchedule == null) {
       return _EmptyScheduleView(
-        onGenerate: () => provider.generateSchedule(),
         taskCount: provider.tasks.length,
       );
     }
@@ -37,7 +36,8 @@ class ScheduleScreen extends StatelessWidget {
             backgroundColor: AppTheme.surface,
             expandedHeight: 130,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+              titlePadding:
+                  const EdgeInsets.fromLTRB(20, 0, 20, 16),
               title: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,8 +45,9 @@ class ScheduleScreen extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Today\'s Schedule',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        schedule.title ?? 'Today\'s Schedule',
+                        style:
+                            Theme.of(context).textTheme.titleLarge,
                       ),
                       const Spacer(),
                       _AiBadge(),
@@ -69,14 +70,12 @@ class ScheduleScreen extends StatelessWidget {
               ),
             ],
           ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: _StatsCards(schedule: schedule),
             ),
           ),
-
           if (schedule.insight.isNotEmpty)
             SliverToBoxAdapter(
               child: Padding(
@@ -84,7 +83,6 @@ class ScheduleScreen extends StatelessWidget {
                 child: _InsightCard(insight: schedule.insight),
               ),
             ),
-
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
             sliver: SliverList(
@@ -95,7 +93,8 @@ class ScheduleScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: ScheduleBlockCard(
                       block: block,
-                      onToggle: () => provider.toggleBlockComplete(index),
+                      onToggle: () =>
+                          provider.toggleBlockComplete(index),
                     ),
                   );
                 },
@@ -110,10 +109,10 @@ class ScheduleScreen extends StatelessWidget {
 
   String _formatDate(DateTime dt) {
     final months = [
-      'Jan','Feb','Mar','Apr','May','Jun',
-      'Jul','Aug','Sep','Oct','Nov','Dec'
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    final days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     final dow = days[dt.weekday - 1];
     return '$dow, ${months[dt.month - 1]} ${dt.day}';
   }
@@ -125,15 +124,16 @@ class _AiBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [AppTheme.primary, AppTheme.primaryDark],
         ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
-        children: const [
-          Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 10),
+        children: [
+          Icon(Icons.auto_awesome_rounded,
+              color: Colors.white, size: 10),
           SizedBox(width: 4),
           Text(
             'AI Generated',
@@ -150,7 +150,7 @@ class _AiBadge extends StatelessWidget {
 }
 
 class _StatsCards extends StatelessWidget {
-  final schedule;
+  final dynamic schedule;
   const _StatsCards({required this.schedule});
 
   @override
@@ -199,7 +199,8 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         decoration: BoxDecoration(
           color: color.withAlpha(20),
           borderRadius: BorderRadius.circular(12),
@@ -247,11 +248,8 @@ class _InsightCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.lightbulb_outline_rounded,
-            color: AppTheme.primary,
-            size: 18,
-          ),
+          const Icon(Icons.lightbulb_outline_rounded,
+              color: AppTheme.primary, size: 18),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -281,7 +279,7 @@ class _LoadingViewState extends State<_LoadingView>
   late AnimationController _controller;
   int _stepIndex = 0;
   final List<String> _steps = [
-    'Analyzing your tasks...',
+    'Analyzing your request...',
     'Optimizing priority order...',
     'Balancing workload...',
     'Scheduling breaks...',
@@ -292,14 +290,15 @@ class _LoadingViewState extends State<_LoadingView>
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800))
+        vsync: this,
+        duration: const Duration(milliseconds: 800))
       ..repeat(reverse: true);
     _runSteps();
   }
 
   void _runSteps() async {
     for (int i = 0; i < _steps.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 800));
+      await Future.delayed(const Duration(milliseconds: 900));
       if (mounted) setState(() => _stepIndex = i);
     }
   }
@@ -323,22 +322,21 @@ class _LoadingViewState extends State<_LoadingView>
               Container(
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0x1A6C5CE7),
+                decoration: const BoxDecoration(
+                  color: Color(0x1A6C5CE7),
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        AppTheme.primary),
                     strokeWidth: 3,
                   ),
                 ),
               ),
               const SizedBox(height: 32),
-              Text(
-                'Building your schedule',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text('Building your schedule',
+                  style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 12),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
@@ -407,15 +405,12 @@ class _ErrorView extends StatelessWidget {
               Container(
                 width: 72,
                 height: 72,
-                decoration: BoxDecoration(
-                  color: const Color(0x1AE24B4A),
+                decoration: const BoxDecoration(
+                  color: Color(0x1AE24B4A),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.error_outline_rounded,
-                  size: 36,
-                  color: AppTheme.danger,
-                ),
+                child: const Icon(Icons.error_outline_rounded,
+                    size: 36, color: AppTheme.danger),
               ),
               const SizedBox(height: 20),
               Text('Something went wrong',
@@ -435,9 +430,8 @@ class _ErrorView extends StatelessWidget {
 }
 
 class _EmptyScheduleView extends StatelessWidget {
-  final VoidCallback onGenerate;
   final int taskCount;
-  const _EmptyScheduleView({required this.onGenerate, required this.taskCount});
+  const _EmptyScheduleView({required this.taskCount});
 
   @override
   Widget build(BuildContext context) {
@@ -452,36 +446,22 @@ class _EmptyScheduleView extends StatelessWidget {
               Container(
                 width: 96,
                 height: 96,
-                decoration: BoxDecoration(
-                  color: const Color(0x146C5CE7),
+                decoration: const BoxDecoration(
+                  color: Color(0x146C5CE7),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.auto_awesome_rounded,
-                  size: 48,
-                  color: AppTheme.primary,
-                ),
+                child: const Icon(Icons.auto_awesome_rounded,
+                    size: 48, color: AppTheme.primary),
               ),
               const SizedBox(height: 24),
-              Text(
-                'Ready to generate',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text('Ready to generate',
+                  style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 8),
               Text(
-                taskCount == 0
-                    ? 'Add some tasks first, then tap the AI button to generate your optimized schedule.'
-                    : 'You have $taskCount task${taskCount > 1 ? 's' : ''} ready. Tap the button below to generate your AI-optimized schedule.',
+                'Tap the ✦ button below to describe your schedule and let AI build it for you.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 28),
-              if (taskCount > 0)
-                ElevatedButton.icon(
-                  onPressed: onGenerate,
-                  icon: const Icon(Icons.auto_awesome_rounded, size: 20),
-                  label: const Text('Generate schedule'),
-                ),
             ],
           ),
         ),

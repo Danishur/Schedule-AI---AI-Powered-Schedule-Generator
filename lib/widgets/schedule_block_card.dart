@@ -12,10 +12,10 @@ class ScheduleBlockCard extends StatelessWidget {
     required this.onToggle,
   });
 
-  Color _fade(Color c) => Color.fromARGB(
-    (c.alpha * 0.4).round(), c.red, c.green, c.blue);
-  Color _fadeBg(Color c) => Color.fromARGB(
-    (c.alpha * 0.5).round(), c.red, c.green, c.blue);
+  Color _fade(Color c) =>
+      Color.fromARGB((c.alpha * 0.4).round(), c.red, c.green, c.blue);
+  Color _fadeBg(Color c) =>
+      Color.fromARGB((c.alpha * 0.5).round(), c.red, c.green, c.blue);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class ScheduleBlockCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Time
+              // Time column
               SizedBox(
                 width: 72,
                 child: Column(
@@ -51,15 +51,18 @@ class ScheduleBlockCard extends StatelessWidget {
                   children: [
                     Text(block.time,
                         style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w600, color: effectiveColor)),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: effectiveColor)),
                     Text(block.endTime,
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: block.isCompleted ? AppTheme.textMuted : AppTheme.textMuted)),
+                        style: const TextStyle(
+                            fontSize: 11, color: AppTheme.textMuted)),
                     const SizedBox(height: 4),
                     Text(block.durationLabel,
                         style: TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.w500, color: effectiveColor)),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: effectiveColor)),
                   ],
                 ),
               ),
@@ -76,8 +79,12 @@ class ScheduleBlockCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: block.isCompleted ? AppTheme.textMuted : AppTheme.textPrimary,
-                            decoration: block.isCompleted ? TextDecoration.lineThrough : null,
+                            color: block.isCompleted
+                                ? AppTheme.textMuted
+                                : AppTheme.textPrimary,
+                            decoration: block.isCompleted
+                                ? TextDecoration.lineThrough
+                                : null,
                           ),
                         ),
                       ),
@@ -89,9 +96,13 @@ class ScheduleBlockCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(
-                            block.isBreak ? Icons.coffee_outlined : Icons.lightbulb_outline_rounded,
+                            block.isBreak
+                                ? Icons.coffee_outlined
+                                : Icons.lightbulb_outline_rounded,
                             size: 12,
-                            color: block.isCompleted ? AppTheme.textMuted : AppTheme.textSecondary,
+                            color: block.isCompleted
+                                ? AppTheme.textMuted
+                                : AppTheme.textSecondary,
                           ),
                           const SizedBox(width: 4),
                           Expanded(
@@ -99,7 +110,9 @@ class ScheduleBlockCard extends StatelessWidget {
                               block.note!,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: block.isCompleted ? AppTheme.textMuted : AppTheme.textSecondary,
+                                color: block.isCompleted
+                                    ? AppTheme.textMuted
+                                    : AppTheme.textSecondary,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -125,7 +138,8 @@ class ScheduleBlockCard extends StatelessWidget {
                     ),
                   ),
                   child: block.isCompleted
-                      ? const Icon(Icons.check_rounded, size: 13, color: Colors.white)
+                      ? const Icon(Icons.check_rounded,
+                          size: 13, color: Colors.white)
                       : null,
                 ),
               ],
@@ -148,10 +162,12 @@ class _TypeBadge extends StatelessWidget {
     final bg = AppTheme.blockBgColor(type);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(6)),
+      decoration: BoxDecoration(
+          color: bg, borderRadius: BorderRadius.circular(6)),
       child: Text(
         type[0].toUpperCase() + type.substring(1),
-        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: color),
+        style: TextStyle(
+            fontSize: 10, fontWeight: FontWeight.w600, color: color),
       ),
     );
   }

@@ -65,15 +65,20 @@ class TaskCard extends StatelessWidget {
                 width: 22,
                 height: 22,
                 decoration: BoxDecoration(
-                  color: task.isCompleted ? AppTheme.secondary : Colors.transparent,
+                  color: task.isCompleted
+                      ? AppTheme.secondary
+                      : Colors.transparent,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: task.isCompleted ? AppTheme.secondary : AppTheme.textMuted,
+                    color: task.isCompleted
+                        ? AppTheme.secondary
+                        : AppTheme.textMuted,
                     width: 2,
                   ),
                 ),
                 child: task.isCompleted
-                    ? const Icon(Icons.check_rounded, size: 14, color: Colors.white)
+                    ? const Icon(Icons.check_rounded,
+                        size: 14, color: Colors.white)
                     : null,
               ),
             ),
@@ -87,17 +92,28 @@ class TaskCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: task.isCompleted ? AppTheme.textMuted : AppTheme.textPrimary,
-                      decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+                      color: task.isCompleted
+                          ? AppTheme.textMuted
+                          : AppTheme.textPrimary,
+                      decoration: task.isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      _MetaChip(icon: Icons.timer_outlined, label: task.durationLabel, color: AppTheme.textSecondary),
-                      if (task.deadline != null && task.deadline!.isNotEmpty) ...[
+                      _MetaChip(
+                          icon: Icons.timer_outlined,
+                          label: task.durationLabel,
+                          color: AppTheme.textSecondary),
+                      if (task.deadline != null &&
+                          task.deadline!.isNotEmpty) ...[
                         const SizedBox(width: 8),
-                        _MetaChip(icon: Icons.schedule_rounded, label: task.deadline!, color: AppTheme.warning),
+                        _MetaChip(
+                            icon: Icons.schedule_rounded,
+                            label: task.deadline!,
+                            color: AppTheme.warning),
                       ],
                     ],
                   ),
@@ -106,7 +122,8 @@ class TaskCard extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: AppTheme.priorityBgColor(task.priority),
                 borderRadius: BorderRadius.circular(8),
@@ -122,11 +139,13 @@ class TaskCard extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             IconButton(
-              icon: const Icon(Icons.delete_outline_rounded, size: 18, color: AppTheme.textMuted),
+              icon: const Icon(Icons.delete_outline_rounded,
+                  size: 18, color: AppTheme.textMuted),
               onPressed: () => _showDeleteDialog(context),
               tooltip: 'Delete task',
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppTheme.textMuted, size: 18),
+            const Icon(Icons.chevron_right_rounded,
+                color: AppTheme.textMuted, size: 18),
           ],
         ),
       ),
@@ -138,7 +157,8 @@ class _MetaChip extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  const _MetaChip({required this.icon, required this.label, required this.color});
+  const _MetaChip(
+      {required this.icon, required this.label, required this.color});
 
   @override
   Widget build(BuildContext context) {

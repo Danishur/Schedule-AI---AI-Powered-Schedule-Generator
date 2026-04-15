@@ -6,6 +6,7 @@ import 'tasks_screen.dart';
 import 'schedule_screen.dart';
 import 'history_screen.dart';
 import 'settings_screen.dart';
+import 'generate_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,9 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBottomNav(ScheduleProvider provider) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(top: BorderSide(color: AppTheme.borderColor, width: 1)),
+        border:
+            Border(top: BorderSide(color: AppTheme.borderColor, width: 1)),
       ),
       child: SafeArea(
         child: Padding(
@@ -50,7 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Tasks',
                 index: 0,
                 selectedIndex: _selectedIndex,
-                badge: provider.tasks.isNotEmpty ? '${provider.tasks.length}' : null,
+                badge: provider.tasks.isNotEmpty
+                    ? '${provider.tasks.length}'
+                    : null,
                 onTap: () => setState(() => _selectedIndex = 0),
               ),
               _NavItem(
@@ -62,12 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () => setState(() => _selectedIndex = 1),
               ),
               _GenerateButton(
-                onTap: () async {
-                  await provider.generateSchedule();
-                  if (provider.status == ScheduleStatus.success) {
-                    setState(() => _selectedIndex = 1);
-                  }
-                },
+                onTap: () => _openGenerateSheet(context, provider),
                 isLoading: provider.isLoading,
               ),
               _NavItem(
@@ -76,7 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'History',
                 index: 2,
                 selectedIndex: _selectedIndex,
-                badge: provider.history.isNotEmpty ? '${provider.history.length}' : null,
+                badge: provider.history.isNotEmpty
+                    ? '${provider.history.length}'
+                    : null,
                 onTap: () => setState(() => _selectedIndex = 2),
               ),
               _NavItem(
@@ -90,6 +91,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _openGenerateSheet(
+      BuildContext context, ScheduleProvider provider) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => GenerateSheet(
+        onGenerated: () => setState(() => _selectedIndex = 1),
       ),
     );
   }
@@ -130,7 +143,8 @@ class _NavItem extends StatelessWidget {
               children: [
                 Icon(
                   isActive ? activeIcon : icon,
-                  color: isActive ? AppTheme.primary : AppTheme.textMuted,
+                  color:
+                      isActive ? AppTheme.primary : AppTheme.textMuted,
                   size: 24,
                 ),
                 if (badge != null)
@@ -143,10 +157,14 @@ class _NavItem extends StatelessWidget {
                         color: AppTheme.primary,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                      constraints: const BoxConstraints(
+                          minWidth: 16, minHeight: 16),
                       child: Text(
                         badge!,
-                        style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w700),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -158,8 +176,10 @@ class _NavItem extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive ? AppTheme.primary : AppTheme.textMuted,
+                fontWeight:
+                    isActive ? FontWeight.w600 : FontWeight.w400,
+                color:
+                    isActive ? AppTheme.primary : AppTheme.textMuted,
               ),
             ),
           ],
@@ -172,7 +192,8 @@ class _NavItem extends StatelessWidget {
 class _GenerateButton extends StatelessWidget {
   final VoidCallback onTap;
   final bool isLoading;
-  const _GenerateButton({required this.onTap, required this.isLoading});
+  const _GenerateButton(
+      {required this.onTap, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -182,8 +203,19 @@ class _GenerateButton extends StatelessWidget {
         width: 56,
         height: 56,
         decoration: BoxDecoration(
-          color: AppTheme.primary,
+          gradient: const LinearGradient(
+            colors: [AppTheme.primary, AppTheme.primaryDark],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primary.withAlpha(80),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: isLoading
             ? const Center(
@@ -192,11 +224,13 @@ class _GenerateButton extends StatelessWidget {
                   height: 22,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 ),
               )
-            : const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 26),
+            : const Icon(Icons.auto_awesome_rounded,
+                color: Colors.white, size: 26),
       ),
     );
   }

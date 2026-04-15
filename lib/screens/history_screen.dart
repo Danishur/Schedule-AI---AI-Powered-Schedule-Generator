@@ -21,7 +21,8 @@ class HistoryScreen extends StatelessWidget {
       body: history.isEmpty
           ? _EmptyHistory()
           : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
+              padding:
+                  const EdgeInsets.fromLTRB(20, 0, 20, 100),
               itemCount: history.length,
               itemBuilder: (context, index) {
                 final schedule = history[index];
@@ -30,7 +31,8 @@ class HistoryScreen extends StatelessWidget {
                   child: _HistoryCard(
                     schedule: schedule,
                     isLatest: index == 0,
-                    onTap: () => _showDetail(context, schedule),
+                    onTap: () =>
+                        _showDetail(context, schedule),
                   ),
                 );
               },
@@ -38,12 +40,14 @@ class HistoryScreen extends StatelessWidget {
     );
   }
 
-  void _showDetail(BuildContext context, GeneratedSchedule schedule) {
+  void _showDetail(
+      BuildContext context, GeneratedSchedule schedule) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _ScheduleDetailSheet(schedule: schedule),
+      builder: (_) =>
+          _ScheduleDetailSheet(schedule: schedule),
     );
   }
 }
@@ -62,8 +66,13 @@ class _HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dt = schedule.generatedAt;
-    final months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    final days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    const days = [
+      'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
+    ];
 
     return GestureDetector(
       onTap: onTap,
@@ -73,7 +82,9 @@ class _HistoryCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isLatest ? const Color(0x4D6C5CE7) : AppTheme.borderColor,
+            color: isLatest
+                ? const Color(0x4D6C5CE7)
+                : AppTheme.borderColor,
           ),
         ),
         child: Column(
@@ -89,14 +100,14 @@ class _HistoryCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
-                    Icons.calendar_today_rounded,
-                    color: AppTheme.primary,
-                    size: 20,
-                  ),
+                      Icons.calendar_today_rounded,
+                      color: AppTheme.primary,
+                      size: 20),
                 ),
                 const SizedBox(width: 12),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -111,18 +122,22 @@ class _HistoryCard extends StatelessWidget {
                         if (isLatest) ...[
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
+                            padding:
+                                const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2),
                             decoration: BoxDecoration(
                               color: AppTheme.primary,
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius:
+                                  BorderRadius.circular(6),
                             ),
                             child: const Text(
                               'Latest',
                               style: TextStyle(
                                   fontSize: 9,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w600),
+                                  fontWeight:
+                                      FontWeight.w600),
                             ),
                           ),
                         ],
@@ -131,7 +146,8 @@ class _HistoryCard extends StatelessWidget {
                     Text(
                       _formatTime(dt),
                       style: const TextStyle(
-                          fontSize: 12, color: AppTheme.textSecondary),
+                          fontSize: 12,
+                          color: AppTheme.textSecondary),
                     ),
                   ],
                 ),
@@ -140,11 +156,24 @@ class _HistoryCard extends StatelessWidget {
                     color: AppTheme.textMuted),
               ],
             ),
+            if (schedule.title != null &&
+                schedule.title!.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                schedule.title!,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+            ],
             const SizedBox(height: 12),
             Row(
               children: [
                 _MiniStat(
-                  label: '${schedule.stats.tasksScheduled} tasks',
+                  label:
+                      '${schedule.stats.tasksScheduled} tasks',
                   icon: Icons.check_circle_outline_rounded,
                   color: AppTheme.secondary,
                 ),
@@ -169,7 +198,9 @@ class _HistoryCard extends StatelessWidget {
   }
 
   String _formatTime(DateTime dt) {
-    final h = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
+    final h = dt.hour > 12
+        ? dt.hour - 12
+        : (dt.hour == 0 ? 12 : dt.hour);
     final ampm = dt.hour >= 12 ? 'PM' : 'AM';
     return '$h:${dt.minute.toString().padLeft(2, '0')} $ampm';
   }
@@ -180,7 +211,10 @@ class _MiniStat extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _MiniStat({required this.label, required this.icon, required this.color});
+  const _MiniStat(
+      {required this.label,
+      required this.icon,
+      required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +226,9 @@ class _MiniStat extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-              fontSize: 12, color: color, fontWeight: FontWeight.w500),
+              fontSize: 12,
+              color: color,
+              fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -209,15 +245,12 @@ class _EmptyHistory extends StatelessWidget {
           Container(
             width: 80,
             height: 80,
-            decoration: BoxDecoration(
-              color: const Color(0x146C5CE7),
+            decoration: const BoxDecoration(
+              color: Color(0x146C5CE7),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.history_rounded,
-              size: 40,
-              color: AppTheme.primary,
-            ),
+            child: const Icon(Icons.history_rounded,
+                size: 40, color: AppTheme.primary),
           ),
           const SizedBox(height: 20),
           Text('No history yet',
@@ -247,7 +280,8 @@ class _ScheduleDetailSheet extends StatelessWidget {
       builder: (_, controller) => Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius:
+              BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
           children: [
@@ -260,16 +294,19 @@ class _ScheduleDetailSheet extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 16),
+            Padding(
+              padding:
+                  const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Text(
-                'Schedule Details',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                schedule.title ?? 'Schedule Details',
+                style: const TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.w700),
               ),
             ),
             if (schedule.insight.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                padding:
+                    const EdgeInsets.fromLTRB(20, 0, 20, 12),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -278,14 +315,17 @@ class _ScheduleDetailSheet extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.lightbulb_outline_rounded,
-                          color: AppTheme.primary, size: 16),
+                      const Icon(
+                          Icons.lightbulb_outline_rounded,
+                          color: AppTheme.primary,
+                          size: 16),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           schedule.insight,
                           style: const TextStyle(
-                              fontSize: 12, color: AppTheme.primaryDark),
+                              fontSize: 12,
+                              color: AppTheme.primaryDark),
                         ),
                       ),
                     ],
@@ -295,32 +335,38 @@ class _ScheduleDetailSheet extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 controller: controller,
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+                padding:
+                    const EdgeInsets.fromLTRB(20, 0, 20, 40),
                 itemCount: schedule.blocks.length,
                 itemBuilder: (ctx, i) {
                   final block = schedule.blocks[i];
                   final color = AppTheme.blockColor(block.type);
-                  final bgColor = AppTheme.blockBgColor(block.type);
+                  final bgColor =
+                      AppTheme.blockBgColor(block.type);
                   return Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: bgColor,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius:
+                          BorderRadius.circular(10),
                       border: Border(
-                        left: BorderSide(color: color, width: 3),
+                        left: BorderSide(
+                            color: color, width: 3),
                       ),
                     ),
                     child: Row(
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               Text(
                                 '${block.time} – ${block.endTime}',
                                 style: TextStyle(
-                                    fontSize: 11, color: color),
+                                    fontSize: 11,
+                                    color: color),
                               ),
                               Text(
                                 block.title,

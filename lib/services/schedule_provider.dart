@@ -17,7 +17,7 @@ class ScheduleProvider extends ChangeNotifier {
   int _breakDuration = 30;
   List<GeneratedSchedule> _history = [];
   String _apiKey = '';
-  int _currentView = 0; // 0: tasks, 1: schedule, 2: history
+  int _currentView = 0;
 
   // Getters
   List<Task> get tasks => _tasks;
@@ -45,9 +45,7 @@ class ScheduleProvider extends ChangeNotifier {
       _breakDuration = prefs.getInt('break_duration') ?? 30;
 
       final tasksJson = prefs.getStringList('tasks') ?? [];
-      _tasks = tasksJson
-          .map((t) => Task.fromJson(jsonDecode(t)))
-          .toList();
+      _tasks = tasksJson.map((t) => Task.fromJson(jsonDecode(t))).toList();
 
       final historyJson = prefs.getStringList('history') ?? [];
       _history = historyJson
@@ -56,7 +54,8 @@ class ScheduleProvider extends ChangeNotifier {
 
       final scheduleJson = prefs.getString('current_schedule');
       if (scheduleJson != null) {
-        _currentSchedule = GeneratedSchedule.fromJson(jsonDecode(scheduleJson));
+        _currentSchedule =
+            GeneratedSchedule.fromJson(jsonDecode(scheduleJson));
       }
       notifyListeners();
     } catch (e) {
@@ -74,17 +73,22 @@ class ScheduleProvider extends ChangeNotifier {
       prefs.setStringList(
           'tasks', _tasks.map((t) => jsonEncode(t.toJson())).toList());
       if (_currentSchedule != null) {
-        prefs.setString('current_schedule', jsonEncode(_currentSchedule!.toJson()));
+        prefs.setString(
+            'current_schedule', jsonEncode(_currentSchedule!.toJson()));
       }
       prefs.setStringList(
           'history',
-          _history.take(20).map((h) => jsonEncode(h.toJson())).toList());
+          _history
+              .take(20)
+              .map((h) => jsonEncode(h.toJson()))
+              .toList());
     } catch (e) {
       debugPrint('Save error: $e');
     }
   }
 
-  // Task management
+  // ─── Task management ───────────────────────────────────────────────────────
+
   void addTask(Task task) {
     _tasks.add(task);
     _saveToStorage();
@@ -117,13 +121,15 @@ class ScheduleProvider extends ChangeNotifier {
   void toggleTaskComplete(String id) {
     final idx = _tasks.indexWhere((t) => t.id == id);
     if (idx != -1) {
-      _tasks[idx] = _tasks[idx].copyWith(isCompleted: !_tasks[idx].isCompleted);
+      _tasks[idx] =
+          _tasks[idx].copyWith(isCompleted: !_tasks[idx].isCompleted);
       _saveToStorage();
       notifyListeners();
     }
   }
 
-  // Settings
+  // ─── Settings ──────────────────────────────────────────────────────────────
+
   void setApiKey(String key) {
     _apiKey = key;
     _saveToStorage();
@@ -153,7 +159,8 @@ class ScheduleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Schedule generation
+  // ─── Generate from task list ───────────────────────────────────────────────
+
   Future<void> generateSchedule() async {
     if (_tasks.isEmpty) {
       _errorMessage = 'Please add at least one task first.';
@@ -175,17 +182,56 @@ class ScheduleProvider extends ChangeNotifier {
         breakDuration: _breakDuration,
       );
 
-      _currentSchedule = schedule;
-      _history.insert(0, schedule);
-      if (_history.length > 20) _history = _history.take(20).toList();
-      _status = ScheduleStatus.success;
-      _currentView = 1;
-      _saveToStorage();
+      _setSchedule(schedule);
     } catch (e) {
       _errorMessage = e.toString().replaceFirst('Exception: ', '');
       _status = ScheduleStatus.error;
     }
     notifyListeners();
+  }
+
+  /// Generate schedule from a free-form natural language prompt.
+  Future<void> generateFromPrompt({
+    required String prompt,
+    String? startTime,
+    String? endTime,
+    int? breakDuration,
+  }) async {
+    if (prompt.trim().isEmpty) {
+      _errorMessage = 'Please enter a prompt to generate a schedule.';
+      _status = ScheduleStatus.error;
+      notifyListeners();
+      return;
+    }
+
+    _status = ScheduleStatus.loading;
+    _errorMessage = '';
+    notifyListeners();
+
+    try {
+      final service = AIScheduleService(apiKey: _apiKey);
+      final schedule = await service.generateFromPrompt(
+        prompt: prompt,
+        startTime: startTime ?? _startTime,
+        endTime: endTime ?? _endTime,
+        breakDuration: breakDuration ?? _breakDuration,
+      );
+
+      _setSchedule(schedule);
+    } catch (e) {
+      _errorMessage = e.toString().replaceFirst('Exception: ', '');
+      _status = ScheduleStatus.error;
+    }
+    notifyListeners();
+  }
+
+  void _setSchedule(GeneratedSchedule schedule) {
+    _currentSchedule = schedule;
+    _history.insert(0, schedule);
+    if (_history.length > 20) _history = _history.take(20).toList();
+    _status = ScheduleStatus.success;
+    _currentView = 1;
+    _saveToStorage();
   }
 
   void toggleBlockComplete(int index) {
@@ -210,7 +256,8 @@ class ScheduleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Stats
+  // ─── Stats ─────────────────────────────────────────────────────────────────
+
   Map<String, int> get taskStats {
     return {
       'total': _tasks.length,
